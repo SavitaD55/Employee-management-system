@@ -1,0 +1,184 @@
+[9:10 pm, 31/03/2026] trust me once: <!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management</title>
+</head>
+<body>
+
+<h2>Employee Management System</h2>
+
+<input id="name" placeholder="Name">
+<input id="dept" placeholder="Department">
+<input id="salary" placeholder="Salary">
+
+<br><br>
+
+<button onclick="addEmployee()">Add</button>
+<button onclick="getEmployees()">Show</button>
+
+<ul id="list"></ul>
+
+<script>
+function addEmployee() {
+    let data = {
+        name: document.getElementById("name").value,
+        dept: document.getElementById("dept").value,
+        salary: document.getElementById("salary").value
+    };
+
+    fetch("http://127.0.0.1:5000/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+
+function getEmployees() {
+    fetch("http://127.0.0.1:5000/get")
+    .then(res => res.json())
+    .then(data => {
+        let list = document.getElementById("list");
+        list.innerHTML = "";
+        data.forEach(emp => {
+            let li = document.createElement("li");
+            li.innerText = emp.name + " - " + emp.dept + " - " + emp.salary;
+            list.appendChild(li);
+        });
+    });
+}
+</script>
+
+</body>
+</html>
+[9:30 pm, 31/03/2026] trust me once: <!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            margin: 30px auto;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            background: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Employee Management System</h2>
+
+    <input id="name" placeholder="Name">
+    <input id="dept" placeholder="Department">
+    <input id="salary" placeholder="Salary">
+
+    <br>
+
+    <button onclick="addEmployee()">Add</button>
+    <button onclick="getEmployees()">Show</button>
+</div>
+
+<table id="table">
+    <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Salary</th>
+    </tr>
+</table>
+
+<script>
+function addEmployee() {
+    let data = {
+        name: document.getElementById("name").value,
+        dept: document.getElementById("dept").value,
+        salary: document.getElementById("salary").value
+    };
+
+    fetch("http://127.0.0.1:5000/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+
+function getEmployees() {
+    fetch("http://127.0.0.1:5000/get")
+    .then(res => res.json())
+    .then(data => {
+        let table = document.getElementById("table");
+
+        // clear old rows
+        table.innerHTML = `
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Salary</th>
+        </tr>`;
+
+        data.forEach(emp => {
+            let row = `<tr>
+                <td>${emp.name}</td>
+                <td>${emp.dept}</td>
+                <td>${emp.salary}</td>
+            </tr>`;
+            table.innerHTML += row;
+        });
+    });
+}
+</script>
+
+</body>
+</html>
